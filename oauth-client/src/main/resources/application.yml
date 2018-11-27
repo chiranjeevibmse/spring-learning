@@ -1,0 +1,15 @@
+server :
+  port : 8081
+security:
+  oauth2:
+    client:
+      clientId: ClientId
+      clientSecret: secret
+      accessTokenUri: http://localhost:8080/oauth/token
+      userAuthorizationUri: http://localhost:8080/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8080/rest/resource
+
+spring:
+  thymeleaf:
+    cache: false
