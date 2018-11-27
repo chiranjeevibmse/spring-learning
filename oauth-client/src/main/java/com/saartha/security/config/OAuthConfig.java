@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class OAuthConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher("/**").authorizeRequests().antMatchers("/").permitAll().anyRequest()
+		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/favicon.ico").permitAll().anyRequest()
 				.authenticated();
 	}
 }
