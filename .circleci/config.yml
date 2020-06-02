@@ -2,10 +2,22 @@ version: 2.1
 jobs:
   build:
     working_directory: ~/spring-security
-orbs:
-  maven: circleci/maven@0.0.12
+docker: # run the steps with Docker
+      - image: circleci/openjdk:8-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
 
-workflows:
-  maven_test:
-    jobs:
-      - maven/test # checkout, build, test, and upload test results
+    steps: # a collection of executable commands
+
+      - checkout # check out source code to working directory
+
+      - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: circleci-spring-security-{{ checksum "pom.xml" }}
+      
+      - run: mvn dependency:go-offline # gets the project dependencies
+      
+      - save_cache: # saves the project dependencies
+          paths:
+            - ~/.m2
+          key: circleci-spring-security-{{ checksum "pom.xml" }}
+      
+      - run: mvn package # run the actual tests
